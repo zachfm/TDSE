@@ -19,7 +19,7 @@ def trivial(matrix, v):
 
     diag = (2/dx**2 - v) * (dt / 1j) - (1 / dt)
 
-    for i in xrange(N):
+    for i in range(N):
         matrix[i][i] = diag
         if i < 99:
             matrix[i][i+1] = diag_ul
