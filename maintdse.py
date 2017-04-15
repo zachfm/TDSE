@@ -1,6 +1,8 @@
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+from IPython.display import HTML
 
 # Global variables
 dx = 0.1
@@ -32,22 +34,34 @@ def trivial(matrix, v):
 
     psi1 = np.linalg.solve(matrix, psi0)
 
-    plt.plot(x, psi1)
-    plt.show()
-
-    print(matrix)
+    psi0, psi1 = psi1, psi0
 
 
 
 # The main function in the program
 def main():
     matrix = np.zeros(shape = (N,N), dtype = complex)
-
     v = 0
-
     trivial(matrix, v)
+    
+
+    
+plt.clf()
+fig, ax = plt.subplots(1,1,figsize=(12,4))
+real_part, = ax.plot(x,np.real(psi0))
+imag_part, = ax.plot(x,np.imag(psi0))
 
 
+def update(n):
+    if(n>1):
+        global psi0, psi1
+        main()
+        real_part.set_data(x,np.real(psi0))
+        imag_part.set_data(x,np.imag(psi0))
+        return fig
+    
+anim = animation.FuncAnimation(fig, update,frames=200, interval=50, blit=False)
+video = anim.to_html5_video()
+HTML(video)
 
 
-main()
